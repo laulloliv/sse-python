@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Tutorial - SSE</title>
+</head>
+<body>
+    <h1>Waiting for a message...</h1>
+    <button disabled id="emergency"> Emergency </button>
+    <script>
+        
+        const button = document.getElementById("emergency");
+        
+        const evtSource = new EventSource("http://localhost:8000/sse", {
+            withCredentials: true,
+        });
+
+        evtSource.addEventListener("emergency", (event) => {
+            const message = JSON.parse(event.data).emergency;
+            changeButtonColor(message);
+        });
+
+        function changeButtonColor(message) {
+            if (message){
+                button.style.backgroundColor = "#F40000";
+            }else{
+                button.style.backgroundColor = "#02b126";
+            }
+        }
+
+    </script>
+</body>
+</html>
